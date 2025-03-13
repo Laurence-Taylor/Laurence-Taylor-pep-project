@@ -11,10 +11,11 @@ import Util.ConnectionUtil;
 
 public class AccountDAO {
     
+    // INSERT a new Account
     public Account insertAccount (Account account){
         // Open Connection
         Connection conn = ConnectionUtil.getConnection();
-        // SQL statement
+        // SQL sentence
         String sql = "INSERT INTO Account (username, password) VALUES (?,?);";
         try {
             PreparedStatement preparedStatement = conn.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);
@@ -35,6 +36,7 @@ public class AccountDAO {
         return null;
     }
 
+    // 
     public Account getAccountUserName (String username) {
         Connection conn = ConnectionUtil.getConnection();
         String sql = "SELECT (username, password) FROM Account where username = ?;";
