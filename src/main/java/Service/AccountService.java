@@ -17,7 +17,7 @@ public class AccountService {
 
     // Logic add new account 
     public Account addAccount(Account account){
-        if ((account.getUsername() != "") && (account.getPassword().length()>3) && (accountDAO.getAccountUserName(account.getUsername())!=null)){
+        if ((account.getUsername() != "") && (account.getPassword().length()>3) && (this.accountDAO.getAccount(account)==null)){
             return this.accountDAO.insertAccount(account);
         }
         else{
@@ -25,6 +25,13 @@ public class AccountService {
         }
     }
 
-    
+    public Account getStartSession(Account account){
+        if (this.accountDAO.getAccount(account) != null){
+            return this.accountDAO.getAccount(account);
+        }
+        else{
+            return null;
+        }
+    }
 
 }
