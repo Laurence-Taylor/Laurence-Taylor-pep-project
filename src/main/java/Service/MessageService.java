@@ -17,7 +17,7 @@ public class MessageService {
         this.messageDAO = messageDAO;
     }
 
-    public Message createMessage(Message newMessage){
+    public Message addMessage(Message newMessage){
 
         AccountDAO userAccountDAO = new AccountDAO();
         if ((newMessage.getMessage_text()!="") && (newMessage.getMessage_text().length()<255) && (userAccountDAO.isRealAccount(newMessage.getPosted_by()))){
