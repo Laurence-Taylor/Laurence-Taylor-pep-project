@@ -22,6 +22,16 @@ public class SocialMediaController {
     AccountService accountService;
     MessageService messageService;
 
+    public SocialMediaController(){
+        accountService = new AccountService();
+        messageService = new MessageService();
+    }
+
+    public SocialMediaController(AccountService accountService, MessageService messageService){
+        this.accountService = accountService;
+        this.messageService = messageService;
+    }
+
     /**
      * In order for the test cases to work, you will need to write the endpoints in the startAPI() method, as the test
      * suite must receive a Javalin object from this method.
@@ -30,14 +40,13 @@ public class SocialMediaController {
     public Javalin startAPI() {
         Javalin app = Javalin.create();
         app.post("/register", this::postRegisterAccountHandler);
-        app.post("/login", this::postLoginAccountHandler);
-        app.post("/messages", this::postMessageHandler);
-        app.get("/messages", this::getAllMessagesHandler);
-        app.get("/messages/{message_id}", this::getMessageIdHandler);
-        app.delete("messages/{message_id}", this::deleteMessageIdHandler);
-        app.patch("messages/{message_id}", this::patchMessageIdHandler);
-        app.get("/accounts/{account_id}/messages", this::getMessagesAccountIdHandler);
-        app.start(8080);
+        //app.post("/login", this::postLoginAccountHandler);
+        //app.post("/messages", this::postMessageHandler);
+        //app.get("/messages", this::getAllMessagesHandler);
+        //app.get("/messages/{message_id}", this::getMessageIdHandler);
+        //app.delete("messages/{message_id}", this::deleteMessageIdHandler);
+        //app.patch("messages/{message_id}", this::patchMessageIdHandler);
+        //app.get("/accounts/{account_id}/messages", this::getMessagesAccountIdHandler);
 
         return app;
     }
