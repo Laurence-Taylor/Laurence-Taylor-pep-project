@@ -35,19 +35,25 @@ public class MessageService {
         return this.messageDAO.getAllMessage();
     }
 
-    public Message getMessageByMessageId (Message message){
-        return this.messageDAO.getMessageId(message.getMessage_id());
+    public Message getMessageByMessageId (int message){
+        return this.messageDAO.retrieveMessageIdByMessageId(message);
     }
 
-    public Message deleteMessage (int message_id){
-        return this.deleteMessage(message_id);
+    public Message deleteMessageByMessageId (int message_id){
+        Message existMessage = this.messageDAO.retrieveMessageIdByMessageId(message_id);
+        if(existMessage != null){
+            this.messageDAO.deleteMessageByMessageId(message_id);
+            return existMessage;
+        }else{
+            return null;
+        }
+         
     }
 
-    public Message updateMessage(Message newMessage){
-        if((this.messageDAO.getMessageId(newMessage.getMessage_id()) != null) && 
-        (newMessage.getMessage_text() != "") && 
-        (newMessage.getMessage_text().length()<255)){
-            return this.messageDAO.updateMessageId(newMessage);
+    public Message updateMessage(int messageId, String messageTxt){
+        if((this.messageDAO.retrieveMessageIdByMessageId(messageId) != null) && 
+        (messageTxt != "") && (messageTxt.length() < 255)){
+            return this.messageDAO.updateMessageId();
         }
         else{
             return null;

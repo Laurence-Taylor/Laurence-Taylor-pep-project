@@ -44,10 +44,10 @@ public class SocialMediaController {
         app.post("/login", this::postUserLoginHandler);
         app.post("/messages", this::postCreateMessageHandler);
         app.get("/messages", this::getRetrieveAllMessagesHandler);
-        //app.get("/messages/{message_id}", this::getRetrieveMessageByMessageIdHandler);
-        //app.delete("messages/{message_id}", this::deleteMessageByMessageIdHandler);
-        //app.patch("messages/{message_id}", this::patchMessageIdHandler);
-        app.get("/accounts/{account_id}/messages", this::getRetrieveAllMessagesForUserHandler);
+        app.get("/messages/{message_id}", this::getRetrieveMessageByMessageIdHandler);
+        app.delete("messages/{message_id}", this::deleteMessageByMessageIdHandler);
+        app.patch("messages/{message_id}", this::patchUpdateMessageTexHandler);
+        //app.get("/accounts/{account_id}/messages", this::getRetrieveAllMessagesForUserHandler);
 
         return app;
     }
@@ -99,24 +99,35 @@ public class SocialMediaController {
         ctx.json(messages);
     }
 
-
+    //OKOKOKOKOKOKOKOKOKOKOKOK
     private void getRetrieveMessageByMessageIdHandler(Context ctx) throws JsonProcessingException {
-     //   ObjectMapper mapper = new ObjectMapper();
-     //   int message_id = mapper.readValue(ctx.body(),Message.class.getField("message_id"));
-     //   int message_id = mapper
-     //   Message returnedMessage = messageService.getMessageByMessageId(message_id);
-     //   ctx.json(returnedMessage);
+        int messageToRetrieve = Integer.parseInt(ctx.pathParam("message_id"));
+        Message returnedMessage = messageService.getMessageByMessageId(messageToRetrieve);
+        if (returnedMessage != null){
+            ctx.json(returnedMessage);
+        }else{
+            ctx.status(200);
+        }
+        
     }
 
-    private void deleteMessageByMessageIdHandler(Context ctx) throws JsonProcessingException{
-        ObjectMapper mapper = new ObjectMapper();
-        Message message = mapper.readValue(ctx.body(),Message.class);
-        Message returnedMessage = messageService.deleteMessage(message.getMessage_id());
-        ctx.json(returnedMessage);
-
+    //OKOKOKOKOKOKOKOKOKOKOKOK
+    private void deleteMessageByMessageIdHandler(Context ctx) {
+        int messageToDelete = Integer.parseInt(ctx.pathParam("message_id"));
+        Message deletedMessage = messageService.deleteMessageByMessageId(messageToDelete);
+        if (deletedMessage != null){
+            ctx.json(deletedMessage);
+        }else{
+            ctx.status(200);
+        }
+    
     }
 
-    private void patchMessageIdHandler(Context ctx) {
+
+    private void patchUpdateMessageTexHandler(Context ctx) {
+        int messageToUpdate = Integer.parseInt(ctx.pathParam("message_id"));
+        String messageTxt = ctx.pathParam("message_txt");
+        Message updatedMessage = messageService.updateMessage(messageToUpdate,messageTxt);
         ctx.json("sample text");
     }
 

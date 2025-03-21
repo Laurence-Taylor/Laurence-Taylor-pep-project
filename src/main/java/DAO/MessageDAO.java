@@ -5,6 +5,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,7 +65,7 @@ public class MessageDAO {
     }
     
     // RETURN a message given its message_id
-    public Message getMessageId(int message_id){
+    public Message retrieveMessageIdByMessageId(int message_id){
         Connection conn = ConnectionUtil.getConnection();
         String sql =  "SELECT message_id, posted_by, message_text, time_posted_epoch FROM Message WHERE message_id = ?;";
         try {
@@ -76,56 +80,46 @@ public class MessageDAO {
                 return message;
             }
         } catch (SQLException e) {
-            // TODO: handle exception
             System.out.println(e.getMessage());
         }
         return null;
     }
 
     //DELETE a message given its message_id
-    public Message deleteMessageId(int message_id){
+    public Message deleteMessageByMessageId(int message_id){
         Connection conn = ConnectionUtil.getConnection();
-        String sqlSelect = "SELECT message_id, posted_by, message_text, time_posted_epoch FROM Message WHERE message_id = ?;";
         String sqlDelete = "DELETE message_id, posted_by, message_text, time_posted_epoch FROM Message WHERE message_id = ?;";
         try {
-            PreparedStatement psSelect = conn.prepareStatement(sqlSelect);
-            psSelect.setInt(1, message_id);
-            ResultSet rs = psSelect.executeQuery();
-            Message msgToDelete = new Message();
-            while (rs.next()){
-                msgToDelete = new Message(rs.getInt("message_id"), 
-                                            rs.getInt("posted_by"), 
-                                            rs.getString("message_text"), 
-                                            rs.getLong("time_posted_epoch"));
-                                        }
             PreparedStatement psDelete = conn.prepareStatement(sqlDelete);
             psDelete.setInt(1,message_id);
             psDelete.execute();
-            return msgToDelete;
         } catch (SQLException e) {
-            // TODO: handle exception
             System.out.println(e.getMessage());
         }
         return null;
     }
 
     // UPDATE a given Message
-    public Message updateMessageId(Message newMessage){
+    public Message updateMessageId(int messageId, String messageTxt){
         Connection conn = ConnectionUtil.getConnection();
-        String sql =  "UPDATE Message SET posted_by=?, message_text=?, time_posted_epoch=? WHERE message_id = ?;";
+        String sql =  "UPDATE Message SET message_text=?, time_posted_epoch=? WHERE message_id = ?;";
+        LocalDateTime localDateTime = LocalDateTime.now();
+        ZonedDateTime zdt = ZonedDateTime.of(localDateTime,ZoneId.systemDefault());
+        long date = zdt.toInstant().toEpochMilli(); 
         try {
             PreparedStatement preparedStatement = conn.prepareStatement(sql);
-            preparedStatement.setInt(1, newMessage.getPosted_by());
-            preparedStatement.setString(2, newMessage.getMessage_text());
-            preparedStatement.setLong(3, newMessage.getTime_posted_epoch());
-            preparedStatement.setInt(4, newMessage.getMessage_id());
-            preparedStatement.execute();
-            return new Message(newMessage.getMessage_id(), 
-                                newMessage.getPosted_by(), 
-                                newMessage.getMessage_text(), 
-                                newMessage.getTime_posted_epoch());
+            preparedStatement.setString(1, messageTxt);
+            preparedStatement.setLong(2, date);
+            preparedStatement.setInt(3, messageId);         
+            ResultSet rs = preparedStatement.executeQuery();
+            while (rs.next()){
+                Message message = new Message(rs.getInt("message_id"), 
+                                                rs.getInt("posted_by"), 
+                                                rs.getString("message_text"), 
+                                                rs.getLong("time_posted_epoch"));
+                return message;
+            }
         } catch (SQLException e) {
-            // TODO: handle exception
             System.out.println(e.getMessage());
         }
         return null;
