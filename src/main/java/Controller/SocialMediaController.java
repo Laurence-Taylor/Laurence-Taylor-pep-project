@@ -124,11 +124,15 @@ public class SocialMediaController {
     }
 
 
-    private void patchUpdateMessageTexHandler(Context ctx) {
-        int messageToUpdate = Integer.parseInt(ctx.pathParam("message_id"));
-        String messageTxt = ctx.pathParam("message_txt");
-        Message updatedMessage = messageService.updateMessage(messageToUpdate,messageTxt);
-        ctx.json("sample text");
+    private void patchUpdateMessageTexHandler(Context ctx) throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        Message message = mapper.readValue(ctx.body(), Message.class);
+        Message updatedMessage = messageService.updateMessage(message);
+        if (updatedMessage != null){
+            ctx.json(updatedMessage);
+        }else{
+            ctx.status(400);
+        }
     }
 
     private void getRetrieveAllMessagesForUserHandler(Context ctx) throws JsonProcessingException {

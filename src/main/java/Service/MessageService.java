@@ -50,10 +50,12 @@ public class MessageService {
          
     }
 
-    public Message updateMessage(int messageId, String messageTxt){
-        if((this.messageDAO.retrieveMessageIdByMessageId(messageId) != null) && 
-        (messageTxt != "") && (messageTxt.length() < 255)){
-            return this.messageDAO.updateMessageId();
+    public Message updateMessage(Message message){
+        int no = message.getMessage_id();
+
+        if((this.messageDAO.retrieveMessageIdByMessageId(message.getMessage_id()) != null) && 
+        (message.getMessage_text() != "") && (message.getMessage_text().length() < 255)){
+            return this.messageDAO.updateMessageId(message);
         }
         else{
             return null;

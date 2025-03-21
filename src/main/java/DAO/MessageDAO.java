@@ -100,24 +100,21 @@ public class MessageDAO {
     }
 
     // UPDATE a given Message
-    public Message updateMessageId(int messageId, String messageTxt){
+    public Message updateMessageId(Message message){
         Connection conn = ConnectionUtil.getConnection();
-        String sql =  "UPDATE Message SET message_text=?, time_posted_epoch=? WHERE message_id = ?;";
-        LocalDateTime localDateTime = LocalDateTime.now();
-        ZonedDateTime zdt = ZonedDateTime.of(localDateTime,ZoneId.systemDefault());
-        long date = zdt.toInstant().toEpochMilli(); 
+        String sql =  "UPDATE Message SET message_text=? WHERE message_id = ?;";
         try {
             PreparedStatement preparedStatement = conn.prepareStatement(sql);
-            preparedStatement.setString(1, messageTxt);
-            preparedStatement.setLong(2, date);
-            preparedStatement.setInt(3, messageId);         
+            preparedStatement.setString(1, message.getMessage_text());
+            //preparedStatement.setLong(2, date);
+            preparedStatement.setInt(2, message.getMessage_id());         
             ResultSet rs = preparedStatement.executeQuery();
             while (rs.next()){
-                Message message = new Message(rs.getInt("message_id"), 
+                Message newMessage = new Message(rs.getInt("message_id"), 
                                                 rs.getInt("posted_by"), 
                                                 rs.getString("message_text"), 
                                                 rs.getLong("time_posted_epoch"));
-                return message;
+                return newMessage;
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
