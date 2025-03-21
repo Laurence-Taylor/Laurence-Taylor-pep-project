@@ -51,7 +51,7 @@ public class MessageDAO {
             PreparedStatement preparedStatement = conn.prepareStatement(sql);
             ResultSet rs = preparedStatement.executeQuery();
             while (rs.next()){
-                Message message = new Message(rs.getInt("posted_by"),rs.getString("message_text"),rs.getLong("time_posted_epoch"));
+                Message message = new Message(rs.getInt("message_id"), rs.getInt("posted_by"),rs.getString("message_text"),rs.getLong("time_posted_epoch"));
                 messages.add(message);
             }
         } catch (SQLException e) {
@@ -132,7 +132,7 @@ public class MessageDAO {
     }
 
     //Return all messages posted by an user account
-    public List<Message> getAllMessagePostedBy(int posted_by){
+    public List<Message> retrieveAllMessagePostedBy(int posted_by){
         
         Connection conn = ConnectionUtil.getConnection();
         // Create SQL sentence
