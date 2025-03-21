@@ -123,7 +123,7 @@ public class SocialMediaController {
     
     }
 
-
+    //
     private void patchUpdateMessageTexHandler(Context ctx) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         Message message = mapper.readValue(ctx.body(), Message.class);
@@ -135,6 +135,7 @@ public class SocialMediaController {
         }
     }
 
+    //OKOKOKOKOKOKOKOKOKOKOKOKOKOK
     private void getRetrieveAllMessagesForUserHandler(Context ctx) throws JsonProcessingException {
         int user = Integer.parseInt(ctx.pathParam("account_id"));
         List<Message> messages = messageService.retrieveAllMessagesForUser(user);
