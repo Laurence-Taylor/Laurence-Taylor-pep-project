@@ -51,8 +51,6 @@ public class MessageService {
     }
 
     public Message updateMessage(Message message, int messageId){
-        //int no = message.getMessage_id();
-        //String txt = message.getMessage_text();
         Message existMessage = this.messageDAO.retrieveMessageIdByMessageId(messageId);
         if(( existMessage != null) && 
         (message.getMessage_text() != "") && (message.getMessage_text().length() < 255)){

@@ -31,7 +31,7 @@ public class AccountDAO {
         return null;
     }
 
-    // 
+    // Return all data from a User (account_id, username, password) given username and password
     public Account getAccount (Account userAccount) {
         Connection conn = ConnectionUtil.getConnection();
         String sql = "SELECT account_id, username, password FROM Account where username = ? AND password = ?;";
@@ -52,6 +52,7 @@ public class AccountDAO {
         return null;
     }
 
+    // Check if the acount exist in the DataBase...
     public Boolean isRealAccount (int posted_by){
         Connection conn = ConnectionUtil.getConnection();
         String sql = "SELECT * FROM Account WHERE account_id = ?;";

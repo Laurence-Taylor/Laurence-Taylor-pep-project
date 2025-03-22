@@ -5,10 +5,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -108,13 +104,6 @@ public class MessageDAO {
             preparedStatement.setString(1, message.getMessage_text());
             preparedStatement.setInt(2, messageIdToUpdate);         
             preparedStatement.executeUpdate();
-            //while (rs.next()){
-            //    Message newMessage = new Message(rs.getInt("message_id"), 
-            //                                    rs.getInt("posted_by"), 
-            //                                    rs.getString("message_text"), 
-            //                                    rs.getLong("time_posted_epoch"));
-            //    return newMessage;
-            //}
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
@@ -122,8 +111,7 @@ public class MessageDAO {
     }
 
     //Return all messages posted by an user account
-    public List<Message> retrieveAllMessagePostedBy(int posted_by){
-        
+    public List<Message> retrieveAllMessagePostedBy(int posted_by){   
         Connection conn = ConnectionUtil.getConnection();
         // Create SQL sentence
         String sql = "SELECT message_id, posted_by, message_text, time_posted_epoch FROM Message WHERE posted_by = ?;";

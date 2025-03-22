@@ -57,7 +57,7 @@ public class SocialMediaController {
      * @param context The Javalin Context object manages information about both the HTTP request and response.
      */
 
-     //OKOKOKOKOKOKKOKOKOK
+     //Register a New User
     private void postUserRegistrationHandler(Context ctx) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         Account account = mapper.readValue(ctx.body(), Account.class);
@@ -69,7 +69,7 @@ public class SocialMediaController {
         }
     }
 
-    //OKOKOKOKOKOKOKOKOKOKOK
+    //User Login
     private void postUserLoginHandler(Context ctx) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         Account account = mapper.readValue(ctx.body(), Account.class);
@@ -81,7 +81,7 @@ public class SocialMediaController {
         }
     }
 
-    //OKOKOKOKOKOKOKOKOKOKOKOK 
+    // Create New Message 
     private void postCreateMessageHandler(Context ctx) throws JsonProcessingException{
         ObjectMapper mapper = new ObjectMapper();
         Message message = mapper.readValue(ctx.body(), Message.class);
@@ -93,13 +93,13 @@ public class SocialMediaController {
         }
     }
 
-    //OKOKOKOKOKOKOKOKOKOKOKOK
+    //Retrieve all messages
     private void getRetrieveAllMessagesHandler(Context ctx) {
         List<Message> messages = messageService.getAllMessage();
         ctx.json(messages);
     }
 
-    //OKOKOKOKOKOKOKOKOKOKOKOK
+    //Retrieve message given MessageId
     private void getRetrieveMessageByMessageIdHandler(Context ctx) throws JsonProcessingException {
         int messageToRetrieve = Integer.parseInt(ctx.pathParam("message_id"));
         Message returnedMessage = messageService.getMessageByMessageId(messageToRetrieve);
@@ -111,7 +111,7 @@ public class SocialMediaController {
         
     }
 
-    //OKOKOKOKOKOKOKOKOKOKOKOK
+    //Delete message given MessageId
     private void deleteMessageByMessageIdHandler(Context ctx) {
         int messageToDelete = Integer.parseInt(ctx.pathParam("message_id"));
         Message deletedMessage = messageService.deleteMessageByMessageId(messageToDelete);
@@ -123,7 +123,7 @@ public class SocialMediaController {
     
     }
 
-    //
+    //Update Message given Message Txt and MessageId
     private void patchUpdateMessageTexHandler(Context ctx) throws JsonProcessingException {
         int messageIdToUpdate = Integer.parseInt(ctx.pathParam("message_id"));
         ObjectMapper mapper = new ObjectMapper();
@@ -136,7 +136,7 @@ public class SocialMediaController {
         }
     }
 
-    //OKOKOKOKOKOKOKOKOKOKOKOKOKOK
+    //Retrieve all message given from a User 
     private void getRetrieveAllMessagesForUserHandler(Context ctx) throws JsonProcessingException {
         int user = Integer.parseInt(ctx.pathParam("account_id"));
         List<Message> messages = messageService.retrieveAllMessagesForUser(user);
