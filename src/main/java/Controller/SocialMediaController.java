@@ -125,9 +125,10 @@ public class SocialMediaController {
 
     //
     private void patchUpdateMessageTexHandler(Context ctx) throws JsonProcessingException {
+        int messageIdToUpdate = Integer.parseInt(ctx.pathParam("message_id"));
         ObjectMapper mapper = new ObjectMapper();
         Message message = mapper.readValue(ctx.body(), Message.class);
-        Message updatedMessage = messageService.updateMessage(message);
+        Message updatedMessage = messageService.updateMessage(message, messageIdToUpdate);
         if (updatedMessage != null){
             ctx.json(updatedMessage);
         }else{
